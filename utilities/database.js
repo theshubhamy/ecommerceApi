@@ -1,22 +1,46 @@
+import fs from "fs";
 import Sequelize from "sequelize";
+import {
+  username,
+  password,
+  host,
+  port,
+  database,
+  path,
+  env,
+} from "./constants.js";
 
-const sequelize = new Sequelize(
-  "ecommerceapi",
-  "root",
-  "",
-  {
+const ca = fs.readFileSync(path).toString();
+
+let sequelizeOptions;
+
+if (env === "DEV") {
+  sequelizeOptions = {
     dialect: "mysql",
-    host: "localhost",
+    username,
+    password,
+    host,
+    port,
+    database,
     logging: false,
-  },
-  {
-    pool: {
-      max: 100,
-      min: 0,
-      acquire: 30000,
-      idle: 10000,
+  };
+} else {
+  sequelizeOptions = {
+    dialect: "mysql",
+    username,
+    password,
+    host,
+    port,
+    database,
+    dialectOptions: {
+      ssl: {
+        ca,
+      },
     },
-  }
-);
+    logging: false,
+  };
+}
+
+const sequelize = new Sequelize(sequelizeOptions);
 
 export default sequelize;
