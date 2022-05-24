@@ -17,5 +17,5 @@ export const database =
 export const path =
   process.env.NODE_ENV === "DEV"
     ? "F:/ecommerceApi/utilities/ca-certificate.crt"
-    : "/home/MicrostudyApi/utilities/microstudy-production-db.crt";
+    : "/home/ecommerceApi/utilities/ca-certificate.crt";
 export const env = process.env.NODE_ENV;
