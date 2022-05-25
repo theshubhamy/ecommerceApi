@@ -12,8 +12,6 @@ export const adminSignupPhone = async (req, res, next) => {
   const { name, email, phone, password } = req.body;
   const otp = Number.parseInt(generateOTP(6));
   try {
-     const response = await sendOtp(name, email, otp);
-     if (response.status === 200) {
     const isUnique = await isPhoneUnique(User, phone);
     if (!isUnique) {
       await User.update(
@@ -25,9 +23,7 @@ export const adminSignupPhone = async (req, res, next) => {
       res.status(201).json({
         msg: `Admin already exists. OTP sent to ${email}`,
       });
-      console.log("user already exist");
     } else {
-      console.log("user new here");
       const encryptedPassword = await bcrypt.hash(password, 12);
       await User.create({
         name,
@@ -40,10 +36,10 @@ export const adminSignupPhone = async (req, res, next) => {
         isSeller: true,
         isAuthorized: true,
       });
+      await sendOtp(name, email, otp);
       res.status(201).json({
         msg: `Admin registered! OTP sent to ${email}`,
       });
-    }
     }
   } catch (err) {
     if (!err.statusCode) {

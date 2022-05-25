@@ -21,7 +21,7 @@ let sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 
 export const sendOtp = async (name, email, otp) => {
   try {
-    const result = await axios.post(
+    const response = await axios.post(
       "https://api.sendinblue.com/v3/smtp/email",
       {
         sender: {
@@ -53,7 +53,6 @@ export const sendOtp = async (name, email, otp) => {
         },
       }
     );
-    console.log(result.data);
   } catch (err) {
     sendSmtpEmail.subject = `Apna Mart user signup verification Code! ${otp}. Valid for 2 mins!`;
     sendSmtpEmail.sender = {
@@ -68,5 +67,6 @@ export const sendOtp = async (name, email, otp) => {
     sendSmtpEmail.params = { NAME: name };
     sendSmtpEmail.templateId = 1;
     await apiInstance.sendTransacEmail(sendSmtpEmail);
+    console.log(error);
   }
 };
