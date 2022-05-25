@@ -40,10 +40,10 @@ export const sendOtp = async (name, email, otp) => {
         },
         replyTo: {
           email: "devshubhamyadav@gmail.com",
-          name: "Apna Mart",
+          name: "Apna Mart Support",
         },
-        subject: `Apna Mart user signup verification Code!`,
-        templateId: 5,
+        subject: `Apna Mart Account Verification Code!`,
+        templateId: 4,
       },
       {
         headers: {
@@ -55,18 +55,18 @@ export const sendOtp = async (name, email, otp) => {
     );
     console.log(result.data);
   } catch (err) {
-    sendSmtpEmail.subject = `Dear Customer, Your OTP is ${otp}. Please do not share it with anyone. For more info, please mail us on devshubhamyadav@gmail.com, Regards Apna Mart Purnea`;
+    sendSmtpEmail.subject = `Apna Mart user signup verification Code! ${otp}. Valid for 2 mins!`;
     sendSmtpEmail.sender = {
-      name: "Apna Mart",
+      name: "Apna Mart SUPPORT",
       email: "devshubhamyadav@gmail.com",
     };
     sendSmtpEmail.to = [{ email: email, name: name }];
     sendSmtpEmail.replyTo = {
       email: "devshubhamyadav@gmail.com",
-      name: "Apna Mart",
+      name: "Apna Mart SUPPORT",
     };
     sendSmtpEmail.params = { NAME: name };
-    sendSmtpEmail.templateId = 5;
+    sendSmtpEmail.templateId = 1;
     await apiInstance.sendTransacEmail(sendSmtpEmail);
   }
 };
