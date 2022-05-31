@@ -30,6 +30,7 @@ export const adminLoginEmail = async (req, res, next) => {
     const id = admin["dataValues"]["id"];
     const name = admin["dataValues"]["name"];
     const phone = admin["dataValues"]["phone"];
+    const profileImageUrl = admin["dataValues"]["profileImageUrl"];
     const token = jwt.sign({ id, phone }, process.env.TOKEN_SIGNING_KEY, {
       expiresIn: "1 day",
     });
@@ -46,6 +47,7 @@ export const adminLoginEmail = async (req, res, next) => {
       name: name,
       email: email,
       phone: phone,
+      profileImageUrl: profileImageUrl,
       token: token,
       refreshToken: refreshToken,
     });
