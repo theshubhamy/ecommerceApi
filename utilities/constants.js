@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import "../utilities/";
+
 dotenv.config();
 
 export const username =
@@ -16,6 +16,6 @@ export const database =
     : process.env.DB_DATABASE_NAME;
 export const path =
   process.env.NODE_ENV === "DEV"
-    ? "/Users/devsh/Downloads/ca-certificate.crt"
+    ? "F:/ecommerceApi/utilities/ca-certificate.crt"
     : "/home/ecommerceApi/utilities/ca-certificate.crt";
 export const env = process.env.NODE_ENV;
