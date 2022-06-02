@@ -7,7 +7,7 @@ const User = sequelize.define("user", {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     allowNull: false,
-    primaryKey: true
+    primaryKey: true,
   },
   name: {
     type: Sequelize.STRING,
@@ -29,7 +29,7 @@ const User = sequelize.define("user", {
     type: Sequelize.INTEGER,
     allowNull: true,
   },
-  profileImageUrl:{
+  profileImageUrl: {
     type: Sequelize.STRING,
     allowNull: true,
   },
@@ -41,9 +41,9 @@ const User = sequelize.define("user", {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
   },
-  isAdmin:{
-    type:Sequelize.BOOLEAN,
-    defaultValue:false
+  isAdmin: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
   },
   isVerified: {
     type: Sequelize.BOOLEAN,
@@ -53,9 +53,13 @@ const User = sequelize.define("user", {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
   },
+  token: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
   refreshToken: {
     type: Sequelize.STRING,
-    allowNull: true
+    allowNull: true,
   },
 });
 

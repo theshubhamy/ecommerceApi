@@ -7,7 +7,7 @@ import User from "../../../models/user.js";
 //helpers
 import { validationErrorHandler } from "../../../helpers/validation-error-handler.js";
 
-export const adminLoginPhone = async (req, res, next) => {
+export const adminLoginVerification = async (req, res, next) => {
   validationErrorHandler(req, next);
   const { email, otp } = req.body;
   try {
@@ -19,6 +19,8 @@ export const adminLoginPhone = async (req, res, next) => {
     }
     const id = admin["dataValues"]["id"];
     const name = admin["dataValues"]["name"];
+    const phone = admin["dataValues"]["phone"];
+    const profileImageUrl = admin["dataValues"]["profileImageUrl"];
     const token = jwt.sign({ id, email }, process.env.TOKEN_SIGNING_KEY, {
       expiresIn: "1 day",
     });
@@ -28,10 +30,15 @@ export const adminLoginPhone = async (req, res, next) => {
     );
     await User.update(
       { isVerified: true, token: token, refreshToken: refreshToken, otp: null },
-      { where: { email } }
+      { where: { email, phone } }
     );
+
     res.status(201).json({
-      msg: `Your eamil ${email} verified successfully`,
+      msg: `Admin verified successfully! Logging In.`,
+      name: name,
+      email: email,
+      phone: phone,
+      profileImageUrl: profileImageUrl,
       token: token,
       refreshToken: refreshToken,
     });

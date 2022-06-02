@@ -4,13 +4,15 @@ import bcrypt from "bcryptjs";
 
 //models
 import User from "../../../models/user.js";
-
+import { generateOTP } from "../../../helpers/generate-otp.js";
+import { sendOtp } from "../../../helpers/emailSendOtp.js";
 //helpers
 import { validationErrorHandler } from "../../../helpers/validation-error-handler.js";
 
 export const adminLoginEmail = async (req, res, next) => {
   validationErrorHandler(req, next);
   const { email, password } = req.body;
+  const otp = Number.parseInt(generateOTP(6));
   try {
     const admin = await User.findOne({ where: { email, isAdmin: true } });
     if (!admin) {
@@ -38,19 +40,21 @@ export const adminLoginEmail = async (req, res, next) => {
       { id, phone, name },
       process.env.REFRESH_TOKEN_SIGNING_KEY
     );
-    await User.update(
-      { refreshToken: refreshToken },
-      { where: { email, phone } }
-    );
+
+    await User.update({ otp: otp }, { where: { email, phone } });
+    await sendOtp(name, email, otp);
     res.status(201).json({
-      msg: `Login with email Successful`,
-      name: name,
-      email: email,
-      phone: phone,
-      profileImageUrl: profileImageUrl,
-      token: token,
-      refreshToken: refreshToken,
+      msg: `Please verify it's you. OTP sent to ${email}`,
     });
+    // res.status(201).json({
+    //   msg: `Login with email Successful`,
+    //   name: name,
+    //   email: email,
+    //   phone: phone,
+    //   profileImageUrl: profileImageUrl,
+    //   token: token,
+    //   refreshToken: refreshToken,
+    // });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;

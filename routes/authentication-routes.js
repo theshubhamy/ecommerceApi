@@ -7,6 +7,7 @@ import { adminLoginPhone } from "../controllers/authentication/admin/admin-login
 import { userSignupPhone } from "../controllers/authentication/user/user-signup-phone.js";
 import { userLoginPhone } from "../controllers/authentication/user/user-login-phone.js";
 import { adminLoginEmail } from "../controllers/authentication/admin/admin-login-email.js";
+import { adminLoginVerification } from "../controllers/authentication/admin/admin-login-verification.js";
 import { userLoginEmail } from "../controllers/authentication/user/user-login-email.js";
 import { adminLogout } from "../controllers/authentication/admin/admin-logout.js";
 import { userLogout } from "../controllers/authentication/user/user-logout.js";
@@ -38,15 +39,14 @@ router.post(
   adminSignupPhone
 );
 
-//ADMIN LOGIN USING PHONE + OTP
+//ADMIN LOGIN USING PHONE + OTP verification
 router.post(
-  "/administrator/login/phone",
+  "/administrator/signup/otp",
   [
-    body("phone")
-      .trim()
-      .isInt()
-      .isLength({ min: 10, max: 10 })
-      .withMessage("Phone must be an integer"),
+    body("email")
+      .isEmail()
+      .normalizeEmail()
+      .withMessage("Should be in a valid email format"),
     body("otp")
       .trim()
       .isInt()
@@ -71,7 +71,22 @@ router.post(
   ],
   adminLoginEmail
 );
-
+//ADMIN LOGin OTP verification
+router.post(
+  "/administrator/login/otp",
+  [
+    body("email")
+      .isEmail()
+      .normalizeEmail()
+      .withMessage("Should be in a valid email format"),
+    body("otp")
+      .trim()
+      .isInt()
+      .isLength({ min: 6 })
+      .withMessage("OTP must be an integer and of 6 digits"),
+  ],
+  adminLoginVerification
+);
 //USER LOGIN USING EMAIL + PASSWORD
 router.post(
   "/user/login/email",
