@@ -77,7 +77,7 @@ if (cluster.isMaster) {
   //defining absolute path of current WORKDIR
   const __dirname = path.resolve();
 
-  app.use(express.urlencoded({ extended: false }));
+  app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
   app.use(express.static(__dirname));
   app.use(express.static(path.join(__dirname, "public")));

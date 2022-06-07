@@ -3,7 +3,7 @@ import express from "express";
 import { body } from "express-validator";
 
 import { adminSignupPhone } from "../controllers/authentication/admin/admin-signup-phone.js";
-import { adminLoginPhone } from "../controllers/authentication/admin/admin-login-phone.js";
+import { adminSignupVerification } from "../controllers/authentication/admin/admin-signup-verification.js";
 import { userSignupPhone } from "../controllers/authentication/user/user-signup-phone.js";
 import { userLoginPhone } from "../controllers/authentication/user/user-login-phone.js";
 import { adminLoginEmail } from "../controllers/authentication/admin/admin-login-email.js";
@@ -39,21 +39,18 @@ router.post(
   adminSignupPhone
 );
 
-//ADMIN LOGIN USING PHONE + OTP verification
+//ADMIN Signup email  OTP verification
 router.post(
   "/administrator/signup/otp",
   [
-    body("email")
-      .isEmail()
-      .normalizeEmail()
-      .withMessage("Should be in a valid email format"),
+    body("email").isEmail().withMessage("Should be in a valid email format"),
     body("otp")
       .trim()
       .isInt()
       .isLength({ min: 6 })
       .withMessage("OTP must be an integer and of 6 digits"),
   ],
-  adminLoginPhone
+  adminSignupVerification
 );
 
 //ADMIN LOGIN USING EMAIL + PASSWORD
@@ -62,7 +59,7 @@ router.post(
   [
     body("email")
       .isEmail()
-      .normalizeEmail()
+
       .withMessage("Should be in a valid email format"),
     body("password")
       .trim()
@@ -77,7 +74,6 @@ router.post(
   [
     body("email")
       .isEmail()
-      .normalizeEmail()
       .withMessage("Should be in a valid email format"),
     body("otp")
       .trim()
@@ -93,7 +89,7 @@ router.post(
   [
     body("email")
       .isEmail()
-      .normalizeEmail()
+     
       .withMessage("Should be in a valid email format"),
     body("password")
       .trim()

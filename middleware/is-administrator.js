@@ -23,7 +23,7 @@ export const isAdministrator = async (req, res, next) => {
       {
         where:
           {
-            phone: decodedToken.phone,
+            email: decodedToken.email,
             isAdmin: true
           }
       }

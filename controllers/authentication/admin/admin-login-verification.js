@@ -11,7 +11,10 @@ export const adminLoginVerification = async (req, res, next) => {
   validationErrorHandler(req, next);
   const { email, otp } = req.body;
   try {
-    const admin = await User.findOne({ where: { email, otp, isAdmin: true } });
+    const admin = await User.findOne({
+      where: { email, otp, isAdmin: true },
+      raw: true,
+    });
     if (!admin) {
       const error = new Error("Admin not found");
       error.statusCode = 404;
@@ -21,11 +24,15 @@ export const adminLoginVerification = async (req, res, next) => {
     const name = admin["dataValues"]["name"];
     const phone = admin["dataValues"]["phone"];
     const profileImageUrl = admin["dataValues"]["profileImageUrl"];
-    const token = jwt.sign({ id, email }, process.env.TOKEN_SIGNING_KEY, {
-      expiresIn: "1 day",
-    });
+    const token = jwt.sign(
+      { id, name, phone, email },
+      process.env.TOKEN_SIGNING_KEY,
+      {
+        expiresIn: "1 day",
+      }
+    );
     const refreshToken = jwt.sign(
-      { id, email, name },
+      { id, email, phone, name },
       process.env.REFRESH_TOKEN_SIGNING_KEY
     );
     await User.update(

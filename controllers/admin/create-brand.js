@@ -2,15 +2,16 @@
 import Brand from "../../models/brand.js";
 
 //helpers
-import {validationErrorHandler} from "../../helpers/validation-error-handler.js";
-import {clearImage} from "../../helpers/clear-image.js";
+import { validationErrorHandler } from "../../helpers/validation-error-handler.js";
+import { clearImage } from "../../helpers/clear-image.js";
 
 export const createNewBrand = async (req, res, next) => {
   validationErrorHandler(req, next);
-  const {name, description} = req.body;
+  const { name, description } = req.body;
+
   try {
     if (!req.file) {
-      const error = new Error('No image provided');
+      const error = new Error("No image provided");
       error.statusCode = 422;
       return next(error);
     }
@@ -18,12 +19,12 @@ export const createNewBrand = async (req, res, next) => {
     const preExistingBrand = await Brand.findOne({
       where: {
         name,
-        description
-      }
+      },
+      raw: true,
     });
-    if (preExistingBrand){
+    if (preExistingBrand) {
       clearImage(imageUrl);
-      const error = new Error('Brand Already Exists');
+      const error = new Error("Brand Already Exists");
       error.statusCode = 403;
       return next(error);
     }
@@ -34,7 +35,7 @@ export const createNewBrand = async (req, res, next) => {
     });
     res.status(201).json({
       message: "Brand created successfully",
-      response
+      response,
     });
   } catch (err) {
     if (!err.statusCode) {

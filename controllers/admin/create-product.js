@@ -3,17 +3,17 @@ import Product from "../../models/product.js";
 import User from "../../models/user.js";
 
 //helpers
-import {validationErrorHandler} from "../../helpers/validation-error-handler.js";
+import { validationErrorHandler } from "../../helpers/validation-error-handler.js";
 
 //DB relations
 User.hasMany(Product);
 
 export const createNewAdminProduct = async (req, res, next) => {
   validationErrorHandler(req, next);
-  const {title, price, costPrice, discount, description, stock} = req.body;
+  const { title, price, costPrice, discount, description, stock } = req.body;
   try {
     if (!req.file) {
-      const error = new Error('No image provided');
+      const error = new Error("No image provided");
       error.statusCode = 422;
       return next(error);
     }
@@ -26,11 +26,11 @@ export const createNewAdminProduct = async (req, res, next) => {
       costPrice,
       discount,
       description,
-      stock
+      stock,
     });
     res.status(201).json({
       message: "Product created successfully",
-      response
+      response,
     });
   } catch (err) {
     if (!err.statusCode) {

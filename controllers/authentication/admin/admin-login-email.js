@@ -14,7 +14,10 @@ export const adminLoginEmail = async (req, res, next) => {
   const { email, password } = req.body;
   const otp = Number.parseInt(generateOTP(6));
   try {
-    const admin = await User.findOne({ where: { email, isAdmin: true } });
+    const admin = await User.findOne({
+      where: { email, isAdmin: true },
+      raw: true,
+    });
     if (!admin) {
       const error = new Error("Admin not found");
       error.statusCode = 404;
