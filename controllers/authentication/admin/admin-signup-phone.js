@@ -5,15 +5,17 @@ import User from "../../../models/user.js";
 import { validationErrorHandler } from "../../../helpers/validation-error-handler.js";
 import { generateOTP } from "../../../helpers/generate-otp.js";
 import { sendOtp } from "../../../helpers/emailSendOtp.js";
-import { isPhoneUnique } from "../../../helpers/is-phone-unique.js";
+
 
 export const adminSignupPhone = async (req, res, next) => {
   validationErrorHandler(req, next);
   const { name, email, phone, password } = req.body;
   const otp = Number.parseInt(generateOTP(6));
   try {
-    const isUnique = await isPhoneUnique(User, phone);
-    if (!isUnique) {
+    const admin = await User.findOne({
+      where: { email, isAdmin: true },
+    });
+    if (admin) {
       await User.update(
         { otp },
         {

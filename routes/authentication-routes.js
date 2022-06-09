@@ -1,14 +1,19 @@
 import express from "express";
 
 import { body } from "express-validator";
-
+//admin signup
 import { adminSignupPhone } from "../controllers/authentication/admin/admin-signup-phone.js";
 import { adminSignupVerification } from "../controllers/authentication/admin/admin-signup-verification.js";
+//userSignup
 import { userSignupPhone } from "../controllers/authentication/user/user-signup-phone.js";
+import { userSignupVerification } from "../controllers/authentication/user/user-signup-verification.js";
+//user login
 import { userLoginPhone } from "../controllers/authentication/user/user-login-phone.js";
+import { userLoginEmail } from "../controllers/authentication/user/user-login-email.js";
+//admin login
 import { adminLoginEmail } from "../controllers/authentication/admin/admin-login-email.js";
 import { adminLoginVerification } from "../controllers/authentication/admin/admin-login-verification.js";
-import { userLoginEmail } from "../controllers/authentication/user/user-login-email.js";
+
 import { adminLogout } from "../controllers/authentication/admin/admin-logout.js";
 import { userLogout } from "../controllers/authentication/user/user-logout.js";
 import { adminGetNewTokens } from "../controllers/authentication/admin/get-new-tokens.js";
@@ -80,7 +85,7 @@ router.post(
 );
 //USER LOGIN USING EMAIL + PASSWORD
 router.post(
-  "/user/login/email",
+  "/user/login",
   [
     body("email")
       .isEmail()
@@ -96,16 +101,34 @@ router.post(
 
 //USER SIGNUP USING PHONE
 router.post(
-  "/user/signup/phone",
+  "/user/signup",
   [
     body("name").trim().not().isEmpty().withMessage("Name is required"),
+    body("email").isEmail().withMessage("Should be in a valid email format"),
     body("phone")
       .trim()
       .isInt()
-      .isLength({ min: 10, max: 10 })
-      .withMessage("Phone must be an integer"),
+      .isLength({ min: 10, max: 12 })
+      .withMessage("phone number must be an integer"),
+    body("password")
+      .trim()
+      .isLength({ min: 6 })
+      .withMessage("Minimum 6 characters"),
   ],
   userSignupPhone
+);
+//USER Signup email  OTP verification
+router.post(
+  "/user/signup/otp-verification",
+  [
+    body("email").isEmail().withMessage("Should be in a valid email format"),
+    body("otp")
+      .trim()
+      .isInt()
+      .isLength({ min: 6 })
+      .withMessage("OTP must be an integer and of 6 digits"),
+  ],
+  userSignupVerification
 );
 
 //USER LOGIN USING PHONE + OTP

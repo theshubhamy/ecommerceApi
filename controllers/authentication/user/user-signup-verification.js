@@ -1,21 +1,20 @@
-
 //models
 import User from "../../../models/user.js";
 
 //helpers
 import { validationErrorHandler } from "../../../helpers/validation-error-handler.js";
 
-export const adminSignupVerification = async (req, res, next) => {
+export const userSignupVerification = async (req, res, next) => {
   validationErrorHandler(req, next);
   const { email, otp } = req.body;
 
   try {
-    const admin = await User.findOne({
-      where: { email, otp, isAdmin: true },
+    const user = await User.findOne({
+      where: { email, otp, isAdmin: false },
       raw: true,
     });
-    if (!admin) {
-      const error = new Error("Admin not found");
+    if (!user) {
+      const error = new Error("user not found");
       error.statusCode = 404;
       return next(error);
     }
