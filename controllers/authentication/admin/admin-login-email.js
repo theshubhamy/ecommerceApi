@@ -15,8 +15,7 @@ export const adminLoginEmail = async (req, res, next) => {
   const otp = Number.parseInt(generateOTP(6));
   try {
     const admin = await User.findOne({
-      where: { email, isAdmin: true },
-      raw: true,
+      where: { email, isAdmin: true, isVerified: true },
     });
     if (!admin) {
       const error = new Error("Admin not found");
@@ -31,33 +30,17 @@ export const adminLoginEmail = async (req, res, next) => {
       const error = new Error("Wrong Password");
       error.statusCode = 401;
       return next(error);
+    } else {
+      const name = admin["dataValues"]["name"];
+      const phone = admin["dataValues"]["phone"];
+      
+      await User.update({ otp: otp }, { where: { email, phone } });
+      await sendOtp(name, email,  otp);
+      
+      res.status(201).json({
+        msg: `Please verify it's you. OTP sent to ${email}`,
+      });
     }
-    const id = admin["dataValues"]["id"];
-    const name = admin["dataValues"]["name"];
-    const phone = admin["dataValues"]["phone"];
-    const profileImageUrl = admin["dataValues"]["profileImageUrl"];
-    const token = jwt.sign({ id, phone }, process.env.TOKEN_SIGNING_KEY, {
-      expiresIn: "1 day",
-    });
-    const refreshToken = jwt.sign(
-      { id, phone, name },
-      process.env.REFRESH_TOKEN_SIGNING_KEY
-    );
-
-    await User.update({ otp: otp }, { where: { email, phone } });
-    await sendOtp(name, email, otp);
-    res.status(201).json({
-      msg: `Please verify it's you. OTP sent to ${email}`,
-    });
-    // res.status(201).json({
-    //   msg: `Login with email Successful`,
-    //   name: name,
-    //   email: email,
-    //   phone: phone,
-    //   profileImageUrl: profileImageUrl,
-    //   token: token,
-    //   refreshToken: refreshToken,
-    // });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;

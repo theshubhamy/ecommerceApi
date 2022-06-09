@@ -10,7 +10,7 @@ import { validationErrorHandler } from "../../../helpers/validation-error-handle
 export const adminSignupVerification = async (req, res, next) => {
   validationErrorHandler(req, next);
   const { email, otp } = req.body;
-  console.log(email, otp);
+
   try {
     const admin = await User.findOne({
       where: { email, otp, isAdmin: true },

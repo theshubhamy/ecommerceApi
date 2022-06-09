@@ -41,7 +41,7 @@ router.post(
 
 //ADMIN Signup email  OTP verification
 router.post(
-  "/administrator/signup/otp",
+  "/administrator/signup/otp-verification",
   [
     body("email").isEmail().withMessage("Should be in a valid email format"),
     body("otp")
@@ -55,12 +55,9 @@ router.post(
 
 //ADMIN LOGIN USING EMAIL + PASSWORD
 router.post(
-  "/administrator/login/email",
+  "/administrator/login",
   [
-    body("email")
-      .isEmail()
-
-      .withMessage("Should be in a valid email format"),
+    body("email").isEmail().withMessage("Should be in a valid email format"),
     body("password")
       .trim()
       .isLength({ min: 6 })
@@ -70,11 +67,9 @@ router.post(
 );
 //ADMIN LOGin OTP verification
 router.post(
-  "/administrator/login/otp",
+  "/administrator/login/otp-verification",
   [
-    body("email")
-      .isEmail()
-      .withMessage("Should be in a valid email format"),
+    body("email").isEmail().withMessage("Should be in a valid email format"),
     body("otp")
       .trim()
       .isInt()
@@ -89,7 +84,7 @@ router.post(
   [
     body("email")
       .isEmail()
-     
+
       .withMessage("Should be in a valid email format"),
     body("password")
       .trim()

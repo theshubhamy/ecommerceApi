@@ -44,12 +44,21 @@ if (cluster.isMaster) {
   //multer file storage
   const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-      let dir = "./images";
-      //this will create the folder if not exists
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir);
+      if (file.fieldname === "image") {
+        let dir = "./images";
+        //this will create the folder if not exists
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir);
+        }
+        cb(null, dir);
+      } else if (file.fieldname === "icon") {
+        let dir = "./icons";
+        //this will create the folder if not exists
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir);
+        }
+        cb(null, dir);
       }
-      cb(null, dir);
     },
     filename: (req, file, cb) => {
       cb(
@@ -87,11 +96,20 @@ if (cluster.isMaster) {
     multer({
       storage: fileStorage,
       fileFilter: fileFilter,
-    }).single("image")
+    }).fields([
+      {
+        name: "image",
+        maxCount: 1,
+      },
+      {
+        name: "icon",
+        maxCount: 1,
+      },
+    ])
   );
 
   app.use("/images", express.static(path.join(__dirname, "images")));
-
+app.use("/icons", express.static(path.join(__dirname, "images")));
   //handle cors error
   app.use(corsError);
 

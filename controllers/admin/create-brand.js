@@ -10,12 +10,19 @@ export const createNewBrand = async (req, res, next) => {
   const { name, description } = req.body;
 
   try {
-    if (!req.file) {
+    if (!req.files.image) {
       const error = new Error("No image provided");
       error.statusCode = 422;
       return next(error);
     }
-    const imageUrl = req.file.path;
+    if (!req.files.icon) {
+      const error = new Error("No icon provided");
+      error.statusCode = 422;
+      return next(error);
+    }
+    const imageUrl = req.files.image[0].path;
+    const iconUrl = req.files.icon[0].path;
+
     const preExistingBrand = await Brand.findOne({
       where: {
         name,
@@ -31,7 +38,10 @@ export const createNewBrand = async (req, res, next) => {
     const response = await Brand.create({
       name,
       imageUrl,
+      iconUrl,
       description,
+      isFeatured: true,
+      isActive: true,
     });
     res.status(201).json({
       message: "Brand created successfully",

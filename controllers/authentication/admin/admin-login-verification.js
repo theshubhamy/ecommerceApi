@@ -10,9 +10,10 @@ import { validationErrorHandler } from "../../../helpers/validation-error-handle
 export const adminLoginVerification = async (req, res, next) => {
   validationErrorHandler(req, next);
   const { email, otp } = req.body;
+
   try {
     const admin = await User.findOne({
-      where: { email, otp, isAdmin: true },
+      where: { email, otp, isAdmin: true, isVerified: true },
       raw: true,
     });
     if (!admin) {
@@ -20,12 +21,12 @@ export const adminLoginVerification = async (req, res, next) => {
       error.statusCode = 404;
       return next(error);
     }
-    const id = admin["dataValues"]["id"];
-    const name = admin["dataValues"]["name"];
-    const phone = admin["dataValues"]["phone"];
-    const profileImageUrl = admin["dataValues"]["profileImageUrl"];
+    const id = admin["id"];
+    const name = admin["name"];
+    const phone = admin["phone"];
+    const profileImageUrl = admin["profileImageUrl"];
     const token = jwt.sign(
-      { id, name, phone, email },
+      { id, email, phone, name },
       process.env.TOKEN_SIGNING_KEY,
       {
         expiresIn: "1 day",
@@ -36,12 +37,16 @@ export const adminLoginVerification = async (req, res, next) => {
       process.env.REFRESH_TOKEN_SIGNING_KEY
     );
     await User.update(
-      { isVerified: true, token: token, refreshToken: refreshToken, otp: null },
+      {
+        token: token,
+        refreshToken: refreshToken,
+        otp: null,
+      },
       { where: { email, phone } }
     );
 
     res.status(201).json({
-      msg: `Admin verified successfully! Logging In.`,
+      msg: `Admin verified successfully! Logging in...`,
       name: name,
       email: email,
       phone: phone,
