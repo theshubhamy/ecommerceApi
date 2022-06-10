@@ -1,6 +1,5 @@
 //packages
 import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
 
 //models
 import User from "../../../models/user.js";
@@ -8,45 +7,50 @@ import User from "../../../models/user.js";
 //helpers
 import { validationErrorHandler } from "../../../helpers/validation-error-handler.js";
 
-export const userLoginEmail = async (req, res, next) => {
+export const userLoginOtpVerification = async (req, res, next) => {
   validationErrorHandler(req, next);
-  const { email, password } = req.body;
+  const { email, otp } = req.body;
+
   try {
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({
+      where: { email, otp, isAdmin: false, isVerified: true },
+      raw: true,
+    });
     if (!user) {
       const error = new Error("User not found");
       error.statusCode = 404;
       return next(error);
     }
-    const isPwdEqual = await bcrypt.compare(
-      password,
-      user["dataValues"]["password"]
+    const id = user["id"];
+    const name = user["name"];
+    const phone = user["phone"];
+    const profileImageUrl = user["profileImageUrl"];
+    const token = jwt.sign(
+      { id, email, phone, name },
+      process.env.TOKEN_SIGNING_KEY,
+      {
+        expiresIn: "1 day",
+      }
     );
-    if (!isPwdEqual) {
-      const error = new Error("Wrong Password");
-      error.statusCode = 401;
-      return next(error);
-    }
-
-    const id = user["dataValues"]["id"];
-    const name = user["dataValues"]["name"];
-    const phone = user["dataValues"]["phone"];
-    const token = jwt.sign({ id, phone }, process.env.TOKEN_SIGNING_KEY, {
-      expiresIn: "1 day",
-    });
     const refreshToken = jwt.sign(
-      { id, phone, name },
+      { id, email, phone, name },
       process.env.REFRESH_TOKEN_SIGNING_KEY
     );
     await User.update(
-      { refreshToken: refreshToken },
+      {
+        token: token,
+        refreshToken: refreshToken,
+        otp: null,
+      },
       { where: { email, phone } }
     );
+
     res.status(201).json({
-      msg: `Login with email Successful😊`,
+      msg: `User Otp verification successful😊!`,
       name: name,
       email: email,
       phone: phone,
+      profileImageUrl: profileImageUrl,
       token: token,
       refreshToken: refreshToken,
     });

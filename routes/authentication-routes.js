@@ -9,6 +9,7 @@ import { userSignupPhone } from "../controllers/authentication/user/user-signup-
 import { userSignupVerification } from "../controllers/authentication/user/user-signup-verification.js";
 //user login
 import { userLoginPhone } from "../controllers/authentication/user/user-login-phone.js";
+import { userLoginOtpVerification } from "../controllers/authentication/user/user-login-withotp.js";
 import { userLoginEmail } from "../controllers/authentication/user/user-login-email.js";
 //admin login
 import { adminLoginEmail } from "../controllers/authentication/admin/admin-login-email.js";
@@ -83,21 +84,6 @@ router.post(
   ],
   adminLoginVerification
 );
-//USER LOGIN USING EMAIL + PASSWORD
-router.post(
-  "/user/login",
-  [
-    body("email")
-      .isEmail()
-
-      .withMessage("Should be in a valid email format"),
-    body("password")
-      .trim()
-      .isLength({ min: 6 })
-      .withMessage("Minimum 6 characters"),
-  ],
-  userLoginEmail
-);
 
 //USER SIGNUP USING PHONE
 router.post(
@@ -130,25 +116,38 @@ router.post(
   ],
   userSignupVerification
 );
-
-//USER LOGIN USING PHONE + OTP
+//USER LOGIN USING EMAIL + PASSWORD
 router.post(
-  "/user/login/phone",
+  "/user/signin",
   [
-    body("phone")
+    body("email").isEmail().withMessage("Should be in a valid email format"),
+    body("password")
       .trim()
-      .isInt()
-      .isLength({ min: 10 })
-      .withMessage("Phone must be an integer"),
+      .isLength({ min: 6 })
+      .withMessage("Minimum 6 characters"),
+  ],
+  userLoginEmail
+);
+
+//USER LOGIN USING email + OTP
+router.post(
+  "/user/signin/otp",
+  [body("email").isEmail().withMessage("Should be in a valid email format")],
+  userLoginPhone
+);
+//User LOGin with OTP verification
+router.post(
+  "/user/signin/otp-verification",
+  [
+    body("email").isEmail().withMessage("Should be in a valid email format"),
     body("otp")
       .trim()
       .isInt()
       .isLength({ min: 6 })
       .withMessage("OTP must be an integer and of 6 digits"),
   ],
-  userLoginPhone
+  userLoginOtpVerification
 );
-
 //ADMIN GET NEW TOKENS
 router.put(
   "/administrator/new-token",
