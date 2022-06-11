@@ -10,14 +10,15 @@ User.hasMany(Product);
 
 export const createNewAdminProduct = async (req, res, next) => {
   validationErrorHandler(req, next);
-  const { title, price, costPrice, discount, description, stock } = req.body;
+  const { title, price, costPrice, discount,brand,category, description, stock } = req.body;
   try {
-    if (!req.file) {
+    if (!req.files.image) {
       const error = new Error("No image provided");
       error.statusCode = 422;
       return next(error);
     }
-    const imageUrl = req.file.path;
+    const imageUrl = req.files.image[0].path;
+
     const response = await Product.create({
       userId: req.userId,
       title,
@@ -25,6 +26,8 @@ export const createNewAdminProduct = async (req, res, next) => {
       imageUrl,
       costPrice,
       discount,
+      brand,
+      category,
       description,
       stock,
     });

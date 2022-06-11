@@ -31,6 +31,7 @@ export const createNewBrand = async (req, res, next) => {
     });
     if (preExistingBrand) {
       clearImage(imageUrl);
+      clearImage(iconUrl);
       const error = new Error("Brand Already Exists");
       error.statusCode = 403;
       return next(error);

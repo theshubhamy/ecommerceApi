@@ -167,6 +167,18 @@ router.post(
       .not()
       .isEmpty()
       .withMessage("Should be in a Decimal format"),
+    body("brand")
+      .not()
+      .isEmpty()
+      .trim()
+      .escape()
+      .withMessage("Brand is required"),
+    body("category")
+      .not()
+      .isEmpty()
+      .trim()
+      .escape()
+      .withMessage("Category is required"),
     body("description")
       .not()
       .isEmpty()

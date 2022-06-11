@@ -10,15 +10,15 @@ const Product = sequelize.define("product", {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     allowNull: false,
-    primaryKey: true
+    primaryKey: true,
   },
   userId: {
     type: Sequelize.INTEGER,
     allowNull: false,
     references: {
       model: User,
-      key: 'id'
-    }
+      key: "id",
+    },
   },
   title: {
     type: Sequelize.STRING,
@@ -26,44 +26,52 @@ const Product = sequelize.define("product", {
   },
   price: {
     type: Sequelize.DOUBLE,
-    allowNull: false
+    allowNull: false,
   },
   costPrice: {
     type: Sequelize.DOUBLE,
-    allowNull: false
+    allowNull: false,
   },
   discount: {
     type: Sequelize.DOUBLE,
-    allowNull: false
+    allowNull: false,
+  },
+  brand: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
+  category: {
+    type: Sequelize.STRING,
+    allowNull: false,
   },
   description: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   imageUrl: {
     type: Sequelize.STRING,
-    allowNull: true
+    allowNull: true,
   },
   rating: {
     type: Sequelize.DOUBLE,
-    defaultValue: 0.0
+    defaultValue: 0.0,
   },
   stock: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
   },
   isActive: {
     type: Sequelize.BOOLEAN,
-    defaultValue: false
+    defaultValue: false,
   },
   isTrending: {
     type: Sequelize.BOOLEAN,
-    defaultValue: false
+    defaultValue: false,
   },
   isDealOfTheDay: {
     type: Sequelize.BOOLEAN,
-    defaultValue: false
-  }
+    defaultValue: false,
+  },
 });
 
 export default Product;
