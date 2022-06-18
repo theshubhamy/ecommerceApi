@@ -30,7 +30,8 @@ import { createCoupon } from "../controllers/admin/create-coupon.js";
 import { toggleCoupon } from "../controllers/admin/toggle-coupon.js";
 import { editCoupon } from "../controllers/admin/edit-coupon.js";
 import { getCoupons } from "../controllers/admin/get-all-coupons.js";
-
+import { getAllBrands } from "../controllers/admin/get-all-brand.js";
+import { getAllCategory } from "../controllers/admin/get-all-category.js";
 //middlewares
 import { isAdministrator } from "../middleware/is-administrator.js";
 
@@ -51,7 +52,10 @@ router.get(
 
 //GET ALL COUPONS
 router.get("/coupons", isAdministrator, getCoupons);
-
+//GET ALL brandS
+router.get("/brands", isAdministrator, getAllBrands);
+//GET ALL category
+router.get("/category", isAdministrator, getAllCategory);
 //GET ALL USERS
 router.post(
   "/users",
