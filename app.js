@@ -28,8 +28,6 @@ import { centralError } from "./middleware/error-handlers/central-error.js";
 import authenticationRoutes from "./routes/authentication-routes.js";
 import administratorRoutes from "./routes/administrator-routes.js";
 import userRoutes from "./routes/user-routes.js";
-import sellerRoutes from "./routes/seller-routes.js";
-import buyerRoutes from "./routes/buyer-routes.js";
 
 if (cluster.isMaster) {
   console.log(`Master ${process.pid} is running`);
@@ -109,20 +107,14 @@ if (cluster.isMaster) {
   );
 
   app.use("/images", express.static(path.join(__dirname, "images")));
-app.use("/icons", express.static(path.join(__dirname, "images")));
+  app.use("/icons", express.static(path.join(__dirname, "images")));
   //handle cors error
   app.use(corsError);
 
   //all routes entrypoint here
   app.use("/auth", authenticationRoutes);
-
-  app.use("/administrator", administratorRoutes);
-
-  app.use("/seller", sellerRoutes);
-
-  app.use("/buyer", buyerRoutes);
-
-  app.use("/user", userRoutes);
+  app.use("/admin", administratorRoutes);
+  app.use("/app", userRoutes);
 
   app.use(helmet());
   app.use(compression());

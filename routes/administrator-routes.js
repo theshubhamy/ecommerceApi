@@ -22,8 +22,7 @@ import { getAllSellerProducts } from "../controllers/admin/get-seller-products.j
 import { getAllAdminProducts } from "../controllers/admin/get-admin-products.js";
 import { getAllProducts } from "../controllers/admin/get-all-products.js";
 import { getAllUserDetails } from "../controllers/admin/get-user-details.js";
-import { addProductToCategory } from "../controllers/admin/add-product-to-category.js";
-import { addProductToBrand } from "../controllers/admin/add-product-to-brand.js";
+
 import { getAllBrandProducts } from "../controllers/admin/get-brand-products.js";
 import { getAllCategoryProducts } from "../controllers/admin/get-category-products.js";
 import { createCoupon } from "../controllers/admin/create-coupon.js";
@@ -268,40 +267,6 @@ router.post(
       .withMessage("This is a required boolean"),
   ],
   createCoupon
-);
-
-//ADD A PRODUCT TO A CATEGORY
-router.post(
-  "/add-product-to-category",
-  isAdministrator,
-  [
-    body("productId")
-      .isInt()
-      .not()
-      .isEmpty()
-      .withMessage("ProductId is required"),
-    body("categoryId")
-      .isInt()
-      .not()
-      .isEmpty()
-      .withMessage("CategoryId is required"),
-  ],
-  addProductToCategory
-);
-
-//ADD A PRODUCT TO A BRAND
-router.post(
-  "/add-product-to-brand",
-  isAdministrator,
-  [
-    body("productId")
-      .isInt()
-      .not()
-      .isEmpty()
-      .withMessage("ProductId is required"),
-    body("brandId").isInt().not().isEmpty().withMessage("BrandId is required"),
-  ],
-  addProductToBrand
 );
 
 //EDIT AN EXISTING PRODUCT
