@@ -12,6 +12,7 @@ export const getAllProducts = async (req, res, next) => {
       offset: parseInt(offset),
       limit: parseInt(limit),
     });
+
     res.status(200).json({
       message: "All products fetched successfully",
       products,

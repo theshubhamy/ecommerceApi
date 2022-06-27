@@ -6,7 +6,6 @@ import { validationErrorHandler } from "../../../helpers/validation-error-handle
 import { generateOTP } from "../../../helpers/generate-otp.js";
 import { sendOtp } from "../../../helpers/emailSendOtp.js";
 
-
 export const adminSignupPhone = async (req, res, next) => {
   validationErrorHandler(req, next);
   const { name, email, phone, password } = req.body;
@@ -39,6 +38,7 @@ export const adminSignupPhone = async (req, res, next) => {
         isAuthorized: true,
       });
       await sendOtp(name, email, otp);
+
       res.status(201).json({
         msg: `Admin registered! OTP sent to ${email}`,
       });

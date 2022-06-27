@@ -2,39 +2,44 @@
 import express from "express";
 import { body } from "express-validator";
 //controllers
+import { getAllCategory } from "../controllers/user/get-all-category.js";
+import { getAllBrands } from "../controllers/user/get-all-brand.js";
 import { addProductToCart } from "../controllers/user/add-product-to-cart.js";
 import { removeProductFromCart } from "../controllers/user/remove-product-from-cart.js";
 import { decreaseProductQuantityFromCart } from "../controllers/user/decrease-product-quantity-from-cart.js";
 import { getCoupons } from "../controllers/user/get-coupons.js";
-
-//middleware
-import { isBuyer } from "../middleware/is-buyer.js";
+import { getAllProducts } from "../controllers/user/get-all-product.js";
+import { DealOfTheDayProduct } from "../controllers/user/DealOfTheDay-product.js";
 //controllers
 import { changeUserDetails } from "../controllers/user/change-user-details.js";
 import { fillUserDetails } from "../controllers/user/fill-user-details.js";
-import { uploadGst } from "../controllers/user/upload-gst.js";
 
 //middleware
 import { isUser } from "../middleware/is-user.js";
+import { searchProducts } from "../controllers/user/search-product.js";
 
 const router = express.Router();
 //GET AVAILABLE COUPONS
-router.get("/coupons", isBuyer, getCoupons);
-
+router.get("/coupons", getCoupons);
+router.get("/products", getAllProducts);
+router.get("/categories", getAllCategory);
+router.get("/brands", getAllBrands);
+router.get("/search-product", searchProducts);
+router.get("/deal-of-the-day-product", DealOfTheDayProduct);
 //ADD PRODUCT TO CART
-router.post("/add-product-to-cart", isBuyer, addProductToCart);
+router.post("/add-product-to-cart", addProductToCart);
 
 //REMOVE PRODUCT FROM CART
 router.post(
   "/remove-product-from-cart/:productId",
-  isBuyer,
+
   removeProductFromCart
 );
 
 //DECREASE PRODUCT QUANTITY FROM CART
 router.post(
   "/decrease-product-quantity-cart/:productId",
-  isBuyer,
+
   decreaseProductQuantityFromCart
 );
 //UPDATE USER PROFILE
@@ -110,8 +115,5 @@ router.post(
   ],
   fillUserDetails
 );
-
-//UPLOAD GST FILE
-router.put("/upload-gst", isUser, uploadGst);
 
 export default router;
