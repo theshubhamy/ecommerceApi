@@ -9,18 +9,15 @@ export const createNewCategory = async (req, res, next) => {
   validationErrorHandler(req, next);
   const { name, description } = req.body;
   try {
-    if (!req.files.image) {
-      const error = new Error("No image provided");
-      error.statusCode = 422;
-      return next(error);
+    let imageUrl = "";
+    let iconUrl = "";
+    if (req.files.image) {
+      imageUrl = req.files.image[0].path;
     }
-    if (!req.files.icon) {
-      const error = new Error("No icon provided");
-      error.statusCode = 422;
-      return next(error);
+    if (req.files.icon) {
+      iconUrl = req.files.icon[0].path;
     }
-    const imageUrl = req.files.image[0].path;
-    const iconUrl = req.files.icon[0].path;
+
     const preExistingCategory = await Category.findOne({
       where: {
         name,

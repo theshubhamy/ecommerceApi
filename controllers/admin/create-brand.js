@@ -10,17 +10,20 @@ export const createNewBrand = async (req, res, next) => {
   const { name, description } = req.body;
 
   try {
-    if (!req.files.image) {
-      const error = new Error("No image provided");
-      error.statusCode = 422;
-      return next(error);
+    let imageUrl = "";
+
+    if (req.files.image) {
+      imageUrl = req.files.image[0].path;
+      // const error = new Error("No image provided");
+      // error.statusCode = 422;
+      // return next(error);
     }
     if (!req.files.icon) {
       const error = new Error("No icon provided");
       error.statusCode = 422;
       return next(error);
     }
-    const imageUrl = req.files.image[0].path;
+
     const iconUrl = req.files.icon[0].path;
 
     const preExistingBrand = await Brand.findOne({
