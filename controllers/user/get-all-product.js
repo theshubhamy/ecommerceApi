@@ -8,8 +8,7 @@ export const getAllProducts = async (req, res, next) => {
   validationErrorHandler(req, next);
   const { offset, limit } = req.body;
   try {
-    const products = await Product.findAndCountAll({});
-
+    const products = await Product.findAll();
     res.status(200).json({
       message: "All products fetched successfully",
       products,
