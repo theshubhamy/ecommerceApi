@@ -17,7 +17,6 @@ export const createNewCategory = async (req, res, next) => {
     if (req.files.icon) {
       iconUrl = req.files.icon[0].path;
     }
-
     const preExistingCategory = await Category.findOne({
       where: {
         name,
