@@ -19,6 +19,11 @@ export const searchProducts = async (req, res, next) => {
             },
           },
           {
+            slug: {
+              [Op.like]: "%" + keyword + "%",
+            },
+          },
+          {
             description: {
               [Op.like]: "%" + keyword + "%",
             },

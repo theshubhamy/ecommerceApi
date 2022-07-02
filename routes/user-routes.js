@@ -13,7 +13,7 @@ import { DealOfTheDayProduct } from "../controllers/user/DealOfTheDay-product.js
 //controllers
 import { changeUserDetails } from "../controllers/user/change-user-details.js";
 import { fillUserDetails } from "../controllers/user/fill-user-details.js";
-
+import { getProductDetails } from "../controllers/user/getProductDetails.js";
 //middleware
 import { isUser } from "../middleware/is-user.js";
 import { searchProducts } from "../controllers/user/search-product.js";
@@ -22,6 +22,7 @@ const router = express.Router();
 //GET AVAILABLE COUPONS
 router.get("/coupons", getCoupons);
 router.get("/products", getAllProducts);
+router.get("/product-details", getProductDetails);
 router.get("/categories", getAllCategory);
 router.get("/brands", getAllBrands);
 router.get("/search-product", searchProducts);
