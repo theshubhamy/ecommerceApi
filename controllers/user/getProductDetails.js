@@ -9,7 +9,8 @@ export const getProductDetails = async (req, res, next) => {
 
   try {
     const keyword = req.query.slug;
-    const Products = await Product.findOne({
+    const Products = await Product.findAll({
+      limit: 1,
       where: {
         slug: keyword,
       },
