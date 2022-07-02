@@ -271,7 +271,7 @@ router.post(
 
 //EDIT AN EXISTING PRODUCT
 router.put(
-  "/edit-product/:productId",
+  "/edit-product",
   isAdministrator,
   [
     body("title")
