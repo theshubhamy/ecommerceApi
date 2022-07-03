@@ -14,6 +14,7 @@ import { DealOfTheDayProduct } from "../controllers/user/DealOfTheDay-product.js
 import { changeUserDetails } from "../controllers/user/change-user-details.js";
 import { fillUserDetails } from "../controllers/user/fill-user-details.js";
 import { getProductDetails } from "../controllers/user/getProductDetails.js";
+import { getProductById } from "../controllers/user/getProductById.js";
 //middleware
 import { isUser } from "../middleware/is-user.js";
 import { searchProducts } from "../controllers/user/search-product.js";
@@ -26,6 +27,7 @@ router.get("/product-details", getProductDetails);
 router.get("/categories", getAllCategory);
 router.get("/brands", getAllBrands);
 router.get("/search-product", searchProducts);
+router.get("/product-by-id", getProductById);
 router.get("/deal-of-the-day-product", DealOfTheDayProduct);
 //ADD PRODUCT TO CART
 router.post("/add-product-to-cart", isUser, addProductToCart);
