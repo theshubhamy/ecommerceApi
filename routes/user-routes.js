@@ -28,7 +28,7 @@ router.get("/brands", getAllBrands);
 router.get("/search-product", searchProducts);
 router.get("/deal-of-the-day-product", DealOfTheDayProduct);
 //ADD PRODUCT TO CART
-router.post("/add-product-to-cart", addProductToCart);
+router.post("/add-product-to-cart", isUser, addProductToCart);
 
 //REMOVE PRODUCT FROM CART
 router.post(
