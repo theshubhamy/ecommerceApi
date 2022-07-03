@@ -41,9 +41,9 @@ if (env === "DEV") {
   };
 }
 
-// const sequelize = new Sequelize(sequelizeOptions);
+const sequelize = new Sequelize(sequelizeOptions);
 
-// export default sequelize;
+export default sequelize;
 // import Sequelize from "sequelize";
 
 // const sequelize = new Sequelize(
