@@ -15,7 +15,7 @@ import { changeUserDetails } from "../controllers/user/change-user-details.js";
 import { fillUserDetails } from "../controllers/user/fill-user-details.js";
 import { getProductDetails } from "../controllers/user/getProductDetails.js";
 import { getProductById } from "../controllers/user/getProductById.js";
-import { placeOrder } from "../controllers/user/placeOrder.js";
+// import { placeOrder } from "../controllers/user/placeOrder.js";
 //middleware
 import { isUser } from "../middleware/is-user.js";
 import { searchProducts } from "../controllers/user/search-product.js";
@@ -57,7 +57,7 @@ router.post(
  * userId, subTotalAmount,payableAmount,orderStatus,paymentId,paymentStatus
 
 */
-router.post("/place-order", isUser, placeOrder);
+// router.post("/place-order", isUser, placeOrder);
 //
 //UPDATE USER PROFILE
 router.post(
