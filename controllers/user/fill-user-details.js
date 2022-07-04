@@ -3,50 +3,51 @@ import User from "../../models/user.js";
 import UserDetail from "../../models/user-detail.js";
 
 //helpers
-import {validationErrorHandler} from "../../helpers/validation-error-handler.js";
+import { validationErrorHandler } from "../../helpers/validation-error-handler.js";
 
 //DB relations
 User.hasOne(UserDetail);
 
 export const fillUserDetails = async (req, res, next) => {
   validationErrorHandler(req, next);
-  const {businessName, businessType, address, pincode, state, city, country} = req.body;
+  const { address, pincode, state, city, country } = req.body;
   try {
     const existingUserDetails = await UserDetail.findOne({
       where: {
-        userId: req.userId
-      }
+        userId: req.userId,
+      },
     });
     if (!existingUserDetails) {
-      await UserDetail.create({
+      const userAddress = await UserDetail.create({
         userId: req.userId,
-        businessName,
-        businessType,
         address,
         pincode,
         state,
         city,
-        country
+        country,
       });
       res.status(201).json({
-        msg: "New user details created successfully!"
+        msg: "New user details created successfully!",
+        userAddress,
       });
     } else {
-      await UserDetail.update({
-        businessName,
-        businessType,
-        address,
-        pincode,
-        state,
-        city,
-        country
-      }, {
-        where: {
-          userId: req.userId
+      const userAddress = await UserDetail.update(
+        {
+          address,
+          pincode,
+          state,
+          city,
+          country,
+        },
+        {
+          where: {
+            userId: req.userId,
+          },
         }
-      });
+      );
       res.status(201).json({
-        msg: "User details updated successfully!"
+        msg: "User details updated successfully!",
+        userAddress,
       });
     }
   } catch (err) {

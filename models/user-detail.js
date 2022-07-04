@@ -18,18 +18,6 @@ const UserDetail = sequelize.define("user_detail", {
       key: 'id'
     },
   },
-  businessName: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  gstFile: {
-    type: Sequelize.STRING,
-    allowNull: true,
-  },
-  businessType: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
   address: {
     type: Sequelize.STRING,
     allowNull: false,
