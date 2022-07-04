@@ -5,15 +5,14 @@ import User from "../../../models/user.js";
 //helpers
 import { validationErrorHandler } from "../../../helpers/validation-error-handler.js";
 import { generateOTP } from "../../../helpers/generate-otp.js";
-import { sendOtp } from "../../../helpers/sendOtp.js";
-
+import { sendOtp } from "../../../helpers/emailSendOtp.js";
 
 export const userSignupPhone = async (req, res, next) => {
   validationErrorHandler(req, next);
   const { name, email, phone, password } = req.body;
   const otp = Number.parseInt(generateOTP(6));
   try {
-     const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email } });
     if (user) {
       await User.update(
         { otp },
