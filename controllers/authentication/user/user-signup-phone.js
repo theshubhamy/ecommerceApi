@@ -11,8 +11,10 @@ export const userSignupPhone = async (req, res, next) => {
   validationErrorHandler(req, next);
   const { name, email, phone, password } = req.body;
   const otp = Number.parseInt(generateOTP(6));
-  await sendOtp(name, email, otp);
+
   try {
+    await sendOtp(name, email, otp);
+
     const user = await User.findOne({ where: { email } });
     if (user) {
       await User.update(
@@ -37,7 +39,7 @@ export const userSignupPhone = async (req, res, next) => {
         isSeller: false,
         isAuthorized: true,
       });
-      
+
       res.status(201).json({
         msg: `User registered! OTP sent to ${email}`,
       });

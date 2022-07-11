@@ -8,45 +8,52 @@ const Order = sequelize.define("order", {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     allowNull: false,
-    primaryKey: true
+    primaryKey: true,
   },
   userId: {
     type: Sequelize.INTEGER,
     allowNull: false,
     references: {
       model: User,
-      key: 'id'
-    }
+      key: "id",
+    },
+  },
+  useremail: {
+    type: Sequelize.STRING,
+    allowNull: false,
   },
   subTotalAmount: {
     type: Sequelize.DOUBLE,
     allowNull: false,
-    defaultValue: 0.0
+    defaultValue: 0.0,
   },
-  coupon: {
+  orderedProduct: {
+    
+  },
+  payableAmount: {
     type: Sequelize.DOUBLE,
     allowNull: false,
-    defaultValue: 0.0
+    defaultValue: 0.0,
   },
-  tax: {
-    type: Sequelize.DOUBLE,
+  isOrdered: {
+    type: Sequelize.BOOLEAN,
     allowNull: false,
-    defaultValue: 0.0
+    defaultValue: false,
   },
-  amount: {
-    type: Sequelize.DOUBLE,
+  isOrderConfirmed: {
+    type: Sequelize.BOOLEAN,
     allowNull: false,
-    defaultValue: 0.0
+    defaultValue: false,
   },
   isShipped: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
-    defaultValue: false
+    defaultValue: false,
   },
   isDelivered: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
-    defaultValue: false
+    defaultValue: false,
   },
   deliveryAddress: {
     type: Sequelize.STRING,

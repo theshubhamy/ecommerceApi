@@ -18,7 +18,7 @@ export const fillUserDetails = async (req, res, next) => {
       },
     });
     if (!existingUserDetails) {
-      const userAddress = await UserDetail.create({
+      const us = await UserDetail.create({
         userId: req.userId,
         address,
         pincode,
