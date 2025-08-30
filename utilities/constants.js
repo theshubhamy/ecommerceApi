@@ -14,8 +14,4 @@ export const database =
   process.env.NODE_ENV === "DEV"
     ? "ecommerceapi"
     : process.env.DB_DATABASE_NAME;
-export const path =
-  process.env.NODE_ENV === "DEV"
-    ? "F:/ecommerceApi/utilities/ca-certificate.crt"
-    : "/home/ecommerceApi/utilities/ca-certificate.crt";
 export const env = process.env.NODE_ENV;
